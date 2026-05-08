@@ -1,50 +1,34 @@
-# Welcome to your Expo app 👋
+# Лабораторна робота №5
+## Задоєнко Роман  ІПЗ-24-3  
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Get started
+## Інструкція запуску
+1. Встановіть залежності: `npm install`
+2. Запустіть застосунок: `npx expo start`
+3. Зчитайте QR-код через застосунок Expo Go на телефоні.
 
-1. Install dependencies
+## Опис реалізованого функціоналу
+Застосунок реалізує захищену маршрутизацію за допомогою Expo Router та Context API. Користувачі без авторизації перенаправляються на екрани входу/реєстрації. Після авторизації відкривається каталог товарів. Картки товарів використовують динамічні маршрути для переходу на екран детальної інформації.
 
-   ```bash
-   npm install
-   ```
+## Скріншоти
+# <img width="591" height="1280" alt="photo_1_2026-05-07_22-56-54" src="https://github.com/user-attachments/assets/b999c777-b243-457c-b3d1-d6e0e5a9a700" />
+# <img width="591" height="1280" alt="photo_2_2026-05-07_22-56-54" src="https://github.com/user-attachments/assets/7ea6740d-e417-466d-84df-ec1ebeadfb4e" />
+# <img width="591" height="1280" alt="photo_3_2026-05-07_22-56-54" src="https://github.com/user-attachments/assets/ea574adc-8e6c-4d2f-a59a-0bcaa2ba4ad5" />
+# <img width="591" height="1280" alt="photo_4_2026-05-07_22-56-54" src="https://github.com/user-attachments/assets/a5304dc7-1e22-4d82-980b-554e0ec7f4e2" />
 
-2. Start the app
+## Висновки 
 
-   ```bash
-   npx expo start
-   ```
+1. **Яким чином за допомогою Expo Router реалізується перенаправлення неавторизованого користувача?**
+   Перенаправлення реалізується у файлі `_layout.jsx` захищеної групи. Якщо контекст показує, що стан авторизації `false`, повертається компонент `<Redirect href="/login" />`, який миттєво відправляє користувача на сторінку входу.
 
-In the output, you'll find options to open the app in a
+2. **У чому полягає різниця між використанням компонента `<Link>` та метода `router.push()`?**
+   `<Link>` використовується декларативно безпосередньо у JSX-коді і за замовчуванням обгортається у доступні елементи, що добре для доступності (accessibility) та SEO (у веб-версії). `router.push()` — це імперативний метод, який використовується всередині функцій JavaScript (наприклад, після успішного виконання API-запиту).
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+3. **Як працюють динамічні маршрути в Expo Router і як отримати передані параметри?**
+   Динамічні маршрути створюються шляхом взяття назви файлу у квадратні дужки, наприклад `[id].jsx`. Expo Router автоматично зчитує значення з URL і передає його. Отримати цей параметр у компоненті можна за допомогою хука `useLocalSearchParams()`.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+4. **Чому стан авторизації доцільно зберігати у глобальному контексті (React Context), а не в локальному стані компонента?**
+   Стан авторизації необхідний багатьом компонентам на різних рівнях вкладеності (наприклад, layout-файлам для захисту екранів, кнопці виходу в Header, сторінці профілю). Якби стан був локальним, довелося б передавати його через props через усі рівні (prop drilling), що робить код незручним і складним для підтримки. Глобальний контекст дозволяє будь-якому компоненту миттєво отримати або змінити цей стан.
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+5. **Для чого використовуються групи маршрутів `(folderName)` і як вони впливають на URL-адресу?**
+   Групи маршрутів використовуються для логічної організації коду і створення окремих `_layout` файлів для різних частин додатку (наприклад окремо для авторизації та для основного додатку). Головна особливість — назва такої папки **ігнорується** в підсумковій URL-адресі (наприклад шлях `app/(auth)/login.jsx` матиме URL просто `/login`).
